@@ -116,10 +116,6 @@ def PCA(D, num_componentes):
     #inicializamos cada uno de los componentes 
     PC = np.zeros((M,num_componentes))
     
-    
-    #Donat que els veps venen amb columna i son les proporcions de cada color per cada component
-    #determinam quina proporció de cada color li correspon a cada pixel segons cada component
-    
     for c in range(0,num_componentes):
         for i in range(0, M):
             for j in range(0, N):
