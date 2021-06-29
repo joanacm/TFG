@@ -99,19 +99,12 @@ def PCA(D, num_componentes):
         for c2 in range(0, N):
             cov_X_np[c2][c1] = cov_X_np[c2][c1] / (M-1.0)  
     
-    # cov_X_np = D.T/(M-1) @ (np.eye(M) - np.ones((M,M)) / M) @ D
-    
     #Calculamos los vaps y veps de la matriz de covarianzas
     #Uso eigh porque la matriz de cov es simetrica
     #los veps son por columnas
     vaps, veps = np.linalg.eig(cov_X_np.T)   
     
     vaps_ordenados = vaps[np.argsort(vaps)[::-1]]
-    # for i in range(0, len(vaps)):
-    #     if vaps[i] <0:
-    #         print(i)
-        
-    # vaps_reducidos = vaps_ordenados[0:num_componentes]
     
     #ordenamos los veps en orden decreciente
     veps_ordenados = veps[:,np.argsort(vaps)[::-1]]
@@ -119,8 +112,7 @@ def PCA(D, num_componentes):
     #Escogemos los (num_componentes) componenetes primeros
     veps_reducidos = veps_ordenados[:,0:num_componentes]
     
-    # print("veps ordenados = ", veps_ordenados.shape)
-    # print("veps reducidos = ", veps_reducidos.shape)
+
     #inicializamos cada uno de los componentes 
     PC = np.zeros((M,num_componentes))
     
@@ -143,9 +135,6 @@ def inverse_PCA(veps, mu, pca):
     num_componentes = len(pca[0]) #columnes
     M = len(pca) #files
     N = len(veps) 
-    # print("M ",M)
-    # print("N ",N)
-    # print(veps.shape)
     
     X=np.zeros((M,N))
     
