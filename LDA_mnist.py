@@ -50,25 +50,19 @@ for c in range(0, 10):
     del(train_c['label'])
     media_por_clases[c] = train_c.mean() #np.mean(train_c,0)
 
+# Calculo matriz de covarianzas de una misma clase
 for i in range(0,n):
     train_menos_media = train.iloc[i, 1:p] - np.array(media_por_clases[num_train[i]])
     S_w = S_w + np.dot(np.reshape(np.array(train_menos_media), (784,1)), np.array([train_menos_media]))
 
 media_matriz = 0
 media_matriz = np.mean(matriz_pixeles)
-print(media_matriz)
 
-# for i in range(0,n):
-#     for j in range(1,p):
-#         media_matriz = media_matriz + train.iloc[i][j]
-       
-# media_matriz = media_matriz/(n*(p-1))
-
+# Calculo de la matriz de covarianzas entre clases
 for i in range(0,n):
     media_i_menos_media = np.array(media_por_clases[num_train[i]]) - np.repeat(media_matriz, p-1)
     S_b = S_b + N[num_train[i]]*(np.dot(np.reshape(np.array(media_i_menos_media), (784,1)), np.array([media_i_menos_media])))
 
-print(S_b)
 
 end = time.time()
 print("El tiempo de ejecución es de "+ str(end - start) + " segundos.")
