@@ -42,38 +42,27 @@ def ADL(x, labels):
         
         #numero de observaciones por grupo
         n = x[labels == i].shape[0]
-        
         mu_vect = mu_vect[np.newaxis, :]
-        
-        mu1_mu2 = mu_vect - mu_x
-        
+        mu1_mu2 = np.array(mu_vect - mu_x)
         E = E + n*np.dot(mu1_mu2.T, mu1_mu2)
     
-    #inicializamos cov. total
-    T = []
-    for i, mu in enumerate(vect_mu_columna_x_grupo):
-        T_i = np.zeros((x.shape[1], x.shape[1]))
-        #print("   ")
-        xi = x[labels == i]
-        for indice_fila, fila in xi.iterrows():
-            #print("fila = ", fila.shape)
-            #print("mu = ", mu.shape)
-            t = (fila - mu)
-            h = np.dot(t[np.newaxis, :], t)
-            T_i = T_i + np.dot(t[np.newaxis, :], t)
-            #print("i = ", h)
-        #print("i = ", T_i)
-        T.append(T_i)
-        
-    Sigma = np.zeros((x.shape[1], x.shape[1]))
-    for Sigma_i in T:
-        Sigma = Sigma + Sigma_i
+    #inicializamos matriz covarianza dentro de clases
+    D = np.zeros((x.shape[1],x.shape[1]))
+    Dg = np.zeros((x.shape[1],x.shape[1]))
+
+    for g in range(0,10):
+        for i in range (0, len(labels)):
+            if labels[i] == g:
+                x_mu = np.array(x.iloc[i] -  vect_mu_columna_x_grupo[g], ndmin = 2)
+                x_muT = x_mu.T
+                Dg = Dg + np.dot(x_muT, x_mu)
+        D = D + Dg
     
-    Sigma_inv = np.linalg.inv(Sigma)
-    W= np.dot(Sigma_inv, E)
+    D_inv = np.linalg.inv(D)
+    W= np.dot(D_inv, E)
     
     vaps, veps = np.linalg.eig(W)
-
+    return D,E
 
 
 
@@ -84,7 +73,8 @@ train = pd.read_csv('data/mnist/train.csv')
 num_train = train['label']
 del(train['label'])
 
-ADL(train, num_train)
+
+D,E = ADL(train, num_train)
 
 end = time.time()
 print("El tiempo de ejecución es de "+ str(end - start) + " segundos.")
