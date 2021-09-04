@@ -54,7 +54,7 @@ veps = pca.components_
 
 for i in range(0, len(num_test)):
     #cargamos una imagen de un dígito desconocido
-    ejemplo_test = np.array(test.iloc[i].values)
+    ejemplo_test = test.iloc[i].values
 
     #projectam l'exemple a les coordenades anteriors (veps)
     test_proy = np.dot(veps, ejemplo_test)
@@ -66,8 +66,8 @@ for i in range(0, len(num_test)):
     
     #comprobamos si se ha acertado
     if index_text != index_train:
-        test = test.iloc[i].values.reshape([28,28])
-        plt.imshow(test, cmap='gray_r')
+        test_x = test.iloc[i].values.reshape([28,28])
+        plt.imshow(test_x, cmap='gray_r')
         plt.title(u'Resultado: %s' % str(index_train))
         plt.savefig("imatges\deteccion\image_erronea_%d.png"%(i+1))
 
