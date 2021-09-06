@@ -62,7 +62,7 @@ def ADL(x, labels):
     W= np.dot(D_inv, E)
     
     vaps, veps = np.linalg.eig(W)
-    return D,E
+    return veps
 
 
 
@@ -74,7 +74,7 @@ num_train = train['label']
 del(train['label'])
 
 
-D,E = ADL(train, num_train)
+veps = ADL(train, num_train)
 
 end = time.time()
 print("El tiempo de ejecución es de "+ str(end - start) + " segundos.")
