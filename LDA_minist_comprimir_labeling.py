@@ -106,13 +106,16 @@ k=9
 lda_compr = LDA(n_components = k)
 #ajustamos modelo
 trainLDA = lda_compr.fit(train, num_train)
-#datos p
+#datos proyectados en los nuevos ejes
 proyectados = trainLDA.transform(train)
-#veps de la matriz W = coef de la funciones discriminantes
-U_k = lda_compr.scalings_[:, 0:(k+1)] #np.array
-U_kT = np.linalg.pinv(U_k)
+#veps de la matriz = coef de la funciones discriminantes = U_k
+U_k = lda_compr.scalings_[:, 0:(k+1)]
+
+
+#invertimos LDA
+U_k_pseudoinv = np.linalg.pinv(U_k) 
 #print(proyectados.shape)
-X_compr = np.dot(proyectados, U_kT) +  lda_compr.xbar_
+X_compr = np.dot(proyectados, U_k_pseudoinv) +  lda_compr.xbar_
 num = X_compr[0].reshape([28,28])
 plt.imshow(num, cmap='gray_r')
 plt.savefig("num.png")
