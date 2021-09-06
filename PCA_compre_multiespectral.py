@@ -185,6 +185,7 @@ R_c, muR = centrarmatriz(R)
 G_c, muG = centrarmatriz(G)
 B_c, muB = centrarmatriz(B)
 
+# Consideramos 5 componentes 
 vapsR, vepsR, pcaR = PCA(R_c, 5)
 vapsG, vepsG, pcaG = PCA(G_c, 5)
 vapsB, vepsB, pcaB = PCA(B_c, 5)
@@ -202,7 +203,6 @@ img_invertida[:,:,0] = img_invertidaR
 img_invertida[:,:,1] = img_invertidaG
 img_invertida[:,:,2] = img_invertidaB
 
-#img.imsave("imatges\dades_traffic\img_invertida50.png", img_invertida)
 scipy.misc.toimage(img_invertida, cmin=0.0).save('imatges\dades_traffic\img_invertida5misc.png')
 
 end = time.time()
